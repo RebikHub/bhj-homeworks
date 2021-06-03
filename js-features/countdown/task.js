@@ -34,3 +34,31 @@ let interval = setInterval(timerWin(), 100)
 //     }
 // }
 // let interval = setInterval(timer(30), 100)
+
+// Повышенный уровень сложности #2
+
+// const timerId = document.getElementById('timer');
+
+// function download(file) {
+//     const link = document.createElement('a');
+//     link.href = 'data:text/plan';
+//     link.setAttribute('target', '_blank')
+//     link.setAttribute('download', file);
+//     link.style.display = 'none';
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+// }
+
+// function timerWin() {
+//     return function() {
+//         let seconds = +timerId.textContent;
+//         if (seconds !== 0) {
+//             return timerId.textContent = seconds - 1;
+//         }
+//         clearInterval(interval);
+//         return download('text.txt');
+//     }
+// }
+
+// let interval = setInterval(timerWin(), 100)
