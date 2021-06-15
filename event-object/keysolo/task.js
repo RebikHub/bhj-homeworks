@@ -16,7 +16,7 @@ class Game {
         this.lossElement.textContent = 0;
     }
 
-    registerEvents(event) {
+    registerEvents() {
         /*
           TODO:
           Написать обработчик события, который откликается
@@ -24,17 +24,14 @@ class Game {
           В случае правильного ввода слова вызываем this.success()
           При неправильном вводе символа - this.fail();
          */
-        // if (event === this.currentSymbol.textContent) {
-        //     this.success()
-        // } else {
-        //     this.fail()
-        // }
-        // console.log(event);
-        return this.currentSymbol.textContent;
-        // console.log(this.currentSymbol);
 
-
-
+        document.addEventListener('keydown', (e) => {
+            if (e.key === this.currentSymbol.textContent) {
+                this.success()
+            } else {
+                this.fail()
+            }
+        });
     }
 
     success() {
@@ -98,13 +95,3 @@ class Game {
 }
 
 const game = new Game(document.getElementById('game'))
-
-document.addEventListener('keydown', (e) => {
-    console.log(e.key);
-    console.log(game.registerEvents())
-    if (e.key === game.registerEvents()) {
-        game.success()
-    } else {
-        game.fail()
-    }
-});
