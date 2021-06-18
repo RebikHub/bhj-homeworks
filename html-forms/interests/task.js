@@ -1,17 +1,24 @@
 const checkbox = document.getElementsByClassName('interest__check');
 
 function onChecked(e) {
-    for (let index of checkbox) {
-        if (index.checked === true) {
-            index.checked = false;
+    if (e.target.checked !== true) {
+        e.target.checked = false;
+        for (let index of checkbox) {
+            if (index.checked === true) {
+                index.checked = false;
+            };
         };
-    };
-
-    let parent = e.target.closest('.interest');
-
-    for (let index of parent.querySelectorAll('input')) {
-        index.checked = true;
-    };
+    } else {
+        for (let index of checkbox) {
+            if (index.checked === true) {
+                index.checked = false;
+            };
+        };
+        let parent = e.target.closest('.interest');
+        for (let index of parent.querySelectorAll('input')) {
+            index.checked = true;
+        };
+    }
 };
 
 for (let element of checkbox) {
