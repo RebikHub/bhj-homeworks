@@ -1,33 +1,34 @@
 const checkbox = document.getElementsByClassName('interest__check');
-const ul = document.querySelectorAll('ul');
-
 
 console.log(checkbox);
-console.log(ul)
-
 
 function onChecked(e) {
-    let parents = e.target.closest('.interests').parentElement.querySelector('input')
+    let parents = e.target.closest('.interests').parentElement.querySelector('input');
     let childs = e.target.closest('.interest').querySelectorAll('input');
-    console.log(this.checked);
+    let sibling = Array.from(this.closest('.interests').querySelectorAll('input'));
+
+    console.log(sibling);
+    console.log(sibling.every((e) => {
+        console.log(e);
+    }));
 
     if (this.checked === true) {
+        parents.indeterminate = true
         for (let index of childs) {
             index.checked = true;
         };
     } else {
+        parents.indeterminate = false
         for (let index of childs) {
             index.checked = false;
         };
     }
+    if (sibling.every((e) => {
+            e.checked === true
+        })) {
+        e.closest('.interests').parentElement.querySelector('input').checked = true
+    }
 }
-// if (e.target.closest('.interests').parentElement) {
-//     console.log('yes');
-// }
-// console.log(parents);
-// parents.indeterminate = true
-// }
-
 
 for (let element of checkbox) {
     element.addEventListener('change', onChecked);
