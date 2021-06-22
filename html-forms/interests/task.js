@@ -1,35 +1,82 @@
-const checkbox = document.getElementsByClassName('interest__check');
+const checkbox = Array.from(document.getElementsByClassName('interest__check'));
 
-console.log(checkbox);
+function nodeArray(selector, parent = document) {
+    return [].slice.call(parent.querySelectorAll(selector));
+};
 
-function onChecked(e) {
-    let parents = e.target.closest('.interests').parentElement.querySelector('input');
+function onCheckedParents(e) {
+    let check = e.target;
+
+    if (!checkbox.indexOf(check)) {
+        return;
+    };
+    const children = nodeArray('input', check.parentNode);
+    children.forEach(child => child.checked = check.checked);
+
+    while (check) {
+        const parent = check.closest('ul').parentElement.querySelector('input');
+        const sibling = nodeArray('input', parent.closest('li').querySelector('ul'));
+        const checkStatus = sibling.map(elem => elem.checked);
+        const every = checkStatus.every(Boolean);
+        const some = checkStatus.some(Boolean);
+        parent.checked = every;
+
+        if (!every && every !== some) {
+            parent.indeterminate = true;
+        } else {
+            parent.indeterminate = false;
+        };
+
+        if (check != parent) {
+            check = parent;
+        } else {
+            check = 0;
+        };
+    };
+}
+
+function onCheckedChildren(e) {
     let childs = e.target.closest('.interest').querySelectorAll('input');
-    let sibling = Array.from(this.closest('.interests').querySelectorAll('input'));
-
-    console.log(sibling);
-    console.log(sibling.every((e) => {
-        console.log(e);
-    }));
-
     if (this.checked === true) {
-        parents.indeterminate = true
         for (let index of childs) {
             index.checked = true;
         };
     } else {
-        parents.indeterminate = false
         for (let index of childs) {
             index.checked = false;
         };
     }
-    if (sibling.every((e) => {
-            e.checked === true
-        })) {
-        e.closest('.interests').parentElement.querySelector('input').checked = true
-    }
 }
 
 for (let element of checkbox) {
-    element.addEventListener('change', onChecked);
+    element.addEventListener('change', onCheckedChildren);
+    element.addEventListener('change', onCheckedParents);
 };
+
+
+// function onCheckedParents(e) {
+//     let parents = e.target.closest('ul').parentElement.querySelector('input');
+//     let sibling = Array.from(e.target.closest('ul').querySelectorAll('input'));
+
+//     if (e.target.matches('.interests_active .interest__check')) {
+//         parents.closest('ul').parentElement.querySelector('input').indeterminate = true
+//         parents.indeterminate = true
+//     } else {
+//         parents.closest('ul').parentElement.querySelector('input').indeterminate = false
+//         parents.indeterminate = false
+//     }
+
+//     for (let element of checkbox) {
+//         if (element.checked === true && element.closest('ul').parentElement.querySelector('input').indeterminate === false) {
+//             element.closest('ul').parentElement.querySelector('input').indeterminate = true
+//         }
+//     }
+//     for (let i = 0; i < checkbox.length; i++) {
+//         if (checkbox[i].closest('.interest').querySelectorAll('input').length > 1) {}
+//         for (const el of checkbox[i].closest('.interest').querySelectorAll('input')) {
+//             if (el.checked === true) {
+//                 checkbox[i].closest('ul').parentElement.querySelector('input').indeterminate = true
+//             }
+//         }
+//     }
+// }
