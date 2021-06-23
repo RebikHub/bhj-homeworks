@@ -23,7 +23,6 @@ function buttonAdd() {
         (newTask.querySelector('.task__remove')).addEventListener('click', (e) => {
             e.target.parentElement.remove();
             e.target.remove();
-            localStorage.removeItem('task')
         });
         saveTasks();
     };
@@ -32,11 +31,11 @@ function buttonAdd() {
 function saveTasks() {
     let html = tasksList.innerHTML;
     localStorage.setItem('task', html);
-}
+};
 
 function getTasks() {
-    return tasksList.innerHTML = localStorage.getItem('task')
-}
+    return tasksList.innerHTML = localStorage.getItem('task');
+};
 
 input.addEventListener('input', onInput);
 input.addEventListener('keyup', enterAdd);
@@ -49,4 +48,4 @@ for (let index of taskRemove) {
         index.remove();
         saveTasks();
     });
-}
+};
