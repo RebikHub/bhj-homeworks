@@ -29,6 +29,57 @@ function removeCart() {
 
 };
 
+function animationImg(arg) {
+    let cloneImg = `<img class="cart__product-image" id="img" src="${productImg[arg].src}">`;
+    let beginLeft = productImg[arg].getBoundingClientRect().left;
+    let beginTop = productImg[arg].getBoundingClientRect().top;
+    let endLeft;
+    let endTop;
+    for (let elem of document.getElementsByClassName('cart__product')) {
+        if (elem.dataset.id === product[arg].dataset.id) {
+            endLeft = elem.querySelector('.cart__product-image').getBoundingClientRect().left;
+            endTop = elem.querySelector('.cart__product-image').getBoundingClientRect().top;
+        };
+    };
+    let stepLeft = (endLeft - beginLeft) / 10;
+    let stepTop = (beginTop - endTop) / 10;
+    cart.insertAdjacentHTML("beforebegin", cloneImg);
+    let img = document.querySelector('#img');
+    console.log(beginLeft);
+    img.style = `left: ${beginLeft}`;
+    img.style = `left: ${beginTop}`;
+    return timerAnimation();
+}
+let beginLeft;
+let beginTop;
+let endLeft;
+let endTop;
+let stepLeft;
+let stepTop;
+
+
+function step() {
+    document.querySelector('body').style = 'position: relative';
+    img.style = 'position: absolute';
+    if (beginLeft <= img.getBoundingClientRect().left <= endLeft || beginTop <= img.getBoundingClientRect().top <= endTop) {
+        img.style.left = `${beginLeft + stepLeft}px`;
+        img.style.top = `${beginTop - stepTop}px`;
+        console.log(beginLeft);
+    } else {
+        img.remove();
+        stopTimer();
+    }
+}
+
+function timerAnimation() {
+    return timerId = setInterval(step, 1000);
+}
+
+function stopTimer() {
+    return clearInterval(timerId);
+}
+
+
 for (let i = 0; i < productAdd.length; i++) {
 
     productAdd[i].addEventListener('click', () => {
@@ -51,6 +102,7 @@ for (let i = 0; i < productAdd.length; i++) {
             cartProducts.insertAdjacentHTML('afterbegin', html);
             cart.style = 'display: block';
             removeCart();
+            animationImg(i);
 
         } else {
 
@@ -59,6 +111,8 @@ for (let i = 0; i < productAdd.length; i++) {
                 if (elem.dataset.id === dataId) {
                     let number = elem.querySelector('.cart__product-count').textContent;
                     elem.querySelector('.cart__product-count').textContent = (+number) + (+productQuantity[i].textContent);
+                    animationImg(i);
+
                 };
             };
         };
