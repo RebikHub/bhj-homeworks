@@ -62,8 +62,7 @@ function animationImg(arg) {
     img.style.left = `${beginLeft}px`;
     img.style.top = `${beginTop}px`;
     return timerAnimation();
-
-}
+};
 
 function step() {
     beginLeft = img.offsetLeft;
@@ -86,11 +85,38 @@ function stopTimer() {
 };
 
 function saveBascet() {
-    let html = cartProducts.innerHTML;
-    localStorage.setItem('bascet', html);
+    let arrayIds = document.getElementsByClassName('cart__product');
+    console.log(document.querySelectorAll('.cart__product'));
+    let storageId = [];
+    for (let i of arrayIds) {
+        storageId.push(i.dataset.id);
+    }
+    localStorage.id = storageId;
+    let arrayImg = document.getElementsByClassName('cart__product-image');
+    console.log(arrayImg);
+    let storageImg = [];
+    for (let i of arrayImg) {
+        storageImg.push(i.src);
+    }
+    localStorage.img = storageImg;
+    let arrayCount = document.getElementsByClassName('cart__product-count');
+    console.log(arrayCount);
+    let storageCount = [];
+    for (let i of arrayCount) {
+        storageCount.push(i.textContent);
+    }
+    localStorage.count = storageCount;
+
+    // let html = cartProducts.innerHTML;
+    // localStorage.setItem('bascet', html);
 };
 
 function getBascet() {
+    let html = `<div class="cart__product" data-id="1">
+    <img class="cart__product-image" src="image.png">
+    <div class="cart__product-count">20</div>
+</div>`
+
     if (localStorage.getItem('bascet')) {
         cart.style = 'display: block';
         return cartProducts.innerHTML = localStorage.getItem('bascet');
@@ -134,13 +160,13 @@ for (let i = 0; i < productAdd.length; i++) {
 for (let i = 0; i < productQuantityControl.length; i++) {
 
     controlDec[i].addEventListener('click', () => {
-        if (+controlDec[i].parentElement.querySelector('.product__quantity-value').textContent > 0) {
+        if (+controlDec[i].parentElement.querySelector('.product__quantity-value').textContent > 1) {
             controlDec[i].parentElement.querySelector('.product__quantity-value').textContent -= 1;
         };
     });
 
     controlInc[i].addEventListener('click', () => {
-        if (+controlInc[i].parentElement.querySelector('.product__quantity-value').textContent >= 0) {
+        if (+controlInc[i].parentElement.querySelector('.product__quantity-value').textContent > 0) {
             ++controlInc[i].parentElement.querySelector('.product__quantity-value').textContent;
         };
     });
