@@ -86,42 +86,78 @@ function stopTimer() {
 
 function saveBascet() {
     let arrayIds = document.getElementsByClassName('cart__product');
-    console.log(document.querySelectorAll('.cart__product'));
-    let storageId = [];
-    for (let i of arrayIds) {
-        storageId.push(i.dataset.id);
-    }
-    localStorage.id = storageId;
-    let arrayImg = document.getElementsByClassName('cart__product-image');
-    console.log(arrayImg);
-    let storageImg = [];
-    for (let i of arrayImg) {
-        storageImg.push(i.src);
-    }
-    localStorage.img = storageImg;
-    let arrayCount = document.getElementsByClassName('cart__product-count');
-    console.log(arrayCount);
-    let storageCount = [];
-    for (let i of arrayCount) {
-        storageCount.push(i.textContent);
-    }
-    localStorage.count = storageCount;
+    let caviar = {};
+    let cook = {};
+    let pike = {};
+    let crab = {};
 
-    // let html = cartProducts.innerHTML;
-    // localStorage.setItem('bascet', html);
+    for (let i = 0; i < arrayIds.length; i++) {
+        if (+arrayIds[i].dataset.id === 1) {
+            caviar.id = arrayIds[i].dataset.id;
+            caviar.img = arrayIds[i].querySelector('.cart__product-image').src;
+            caviar.count = arrayIds[i].querySelector('.cart__product-count').textContent;
+        } else if (+arrayIds[i].dataset.id === 2) {
+            cook.id = arrayIds[i].dataset.id;
+            cook.img = arrayIds[i].querySelector('.cart__product-image').src;
+            cook.count = arrayIds[i].querySelector('.cart__product-count').textContent;
+        } else if (+arrayIds[i].dataset.id === 3) {
+            pike.id = arrayIds[i].dataset.id;
+            pike.img = arrayIds[i].querySelector('.cart__product-image').src;
+            pike.count = arrayIds[i].querySelector('.cart__product-count').textContent;
+        } else {
+            crab.id = arrayIds[i].dataset.id;
+            crab.img = arrayIds[i].querySelector('.cart__product-image').src;
+            crab.count = arrayIds[i].querySelector('.cart__product-count').textContent;
+        };
+    };
+    localStorage.caviar = JSON.stringify(caviar);
+    localStorage.cook = JSON.stringify(cook);
+    localStorage.pike = JSON.stringify(pike);
+    localStorage.crab = JSON.stringify(crab);
 };
 
 function getBascet() {
-    let html = `<div class="cart__product" data-id="1">
-    <img class="cart__product-image" src="image.png">
-    <div class="cart__product-count">20</div>
-</div>`
+    let caviar;
+    let cook;
+    let pike;
+    let crab;
+    let arrayBascet;
+    if (localStorage.length !== 0) {
+        caviar = JSON.parse(localStorage.caviar);
+        cook = JSON.parse(localStorage.cook);
+        pike = JSON.parse(localStorage.pike);
+        crab = JSON.parse(localStorage.crab);
+        arrayBascet = [];
+    } else {
+        return;
+    };
 
-    if (localStorage.getItem('bascet')) {
-        cart.style = 'display: block';
-        return cartProducts.innerHTML = localStorage.getItem('bascet');
-    }
-    return;
+    if (Object.keys(caviar).length !== 0) {
+        arrayBascet.push(`<div class="cart__product" data-id="${caviar.id}">
+    <img class="cart__product-image" src="${caviar.img}">
+    <div class="cart__product-count">${caviar.count}</div>
+</div>`);
+    };
+    if (Object.keys(cook).length !== 0) {
+        arrayBascet.push(`<div class="cart__product" data-id="${cook.id}">
+        <img class="cart__product-image" src="${cook.img}">
+        <div class="cart__product-count">${cook.count}</div>
+    </div>`);
+    };
+    if (Object.keys(pike).length !== 0) {
+        arrayBascet.push(`<div class="cart__product" data-id="${pike.id}">
+        <img class="cart__product-image" src="${pike.img}">
+        <div class="cart__product-count">${pike.count}</div>
+    </div>`);
+    };
+    if (Object.keys(crab).length !== 0) {
+        arrayBascet.push(`<div class="cart__product" data-id="${crab.id}">
+        <img class="cart__product-image" src="${crab.img}">
+        <div class="cart__product-count">${crab.count}</div>
+    </div>`);
+    };
+    cart.style = 'display: block';
+    cartProducts.insertAdjacentHTML('afterbegin', arrayBascet.join(''));
 };
 
 
@@ -131,7 +167,6 @@ for (let i = 0; i < productAdd.length; i++) {
         let dataId = product[i].dataset.id;
         let trueOrFalse = false;
         animationImg(i);
-        saveBascet();
         for (let elem of document.querySelectorAll('.cart__product')) {
             if (elem.dataset.id === dataId) {
                 trueOrFalse = true;
@@ -154,6 +189,7 @@ for (let i = 0; i < productAdd.length; i++) {
                 };
             };
         };
+        saveBascet();
     });
 };
 
