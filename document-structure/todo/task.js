@@ -33,7 +33,8 @@ function enterAdd(e) {
     };
 };
 
-function buttonAdd() {
+function buttonAdd(e) {
+    e.preventDefault();
     taskTitle = Array.from(document.getElementsByClassName('task__title'));
     let index = taskTitle.findIndex(e => e.textContent === '');
     if (todo.trim() !== '') {
@@ -49,6 +50,7 @@ function buttonAdd() {
             removeToDo();
             saveTasks();
         }
+        todo = '';
     }
     input.value = '';
 };
