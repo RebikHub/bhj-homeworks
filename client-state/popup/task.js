@@ -1,18 +1,30 @@
 const subscribeModal = document.querySelector('#subscribe-modal');
 const modalClose = document.querySelector('.modal__close');
 
-subscribeModal.classList.add('modal_active');
+function setCookie(name, value) {
+    document.cookie = name + '=' + encodeURIComponent(value);
+}
 
-getStatus();
+function getCookie(name) {
+    const cookies = document.cookie.split('; ');
+    const cookie = cookies.find(e => e.startsWith(name + '='));
+    return cookie ? decodeURIComponent(cookie.substr((name + '=').length)) : null;
+}
 
 function saveStatus() {
-    document.cookie = "user=au";
-    console.log(document.cookie);
-    subscribeModal.classList.remove('modal_active')
-}
+    setCookie('status', 'true')
+    subscribeModal.classList.remove('modal_active');
+};
 
 function getStatus() {
-    return console.log(document.cookie);
-}
+    const status = getCookie('status');
+    if (status === 'true') {
+        return subscribeModal.classList.remove('modal_active');
+    } else {
+        return subscribeModal.classList.add('modal_active');
+    };
+};
+
+getStatus();
 
 modalClose.addEventListener('click', saveStatus);
