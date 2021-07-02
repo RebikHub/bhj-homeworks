@@ -4,16 +4,17 @@ const btnClear = document.querySelector('.clear-textarea');
 pasteText();
 
 function onEditor() {
-    localStorage.text = JSON.stringify(editor.value);
+    localStorage.text = editor.value;
 };
 
 function onClear() {
     editor.value = '';
+    localStorage.removeItem('text');
 };
 
 function pasteText() {
     if (localStorage.text) {
-        editor.value = JSON.parse(localStorage.text);
+        editor.value = localStorage.getItem('text');
     };
 };
 
