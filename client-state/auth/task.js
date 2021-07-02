@@ -5,31 +5,24 @@ const welcome = document.querySelector('#welcome');
 const userId = document.querySelector('#user_id');
 const login = document.querySelectorAll('.control')[0];
 const password = document.querySelectorAll('.control')[1];
-let loginText;
-let passText;
-let resData;
-let formData = new FormData();
-signinForm.action = '';
-authorization();
 
-function createNewUser() {
-    formData.append('login', loginText);
-    formData.append('password', passText);
-}
+signinForm.action = '';
+
+authorization();
 
 function verification(e) {
     if (login.value === '' || password.value === '') {
         alert('Неверный логин/пароль');
-        login.value = '';
-        password.value = '';
+        signinForm.reset();
     } else {
-        createNewUser();
-        const xhr = new XMLHttpRequest();
+        let formData = new FormData(signinForm);
+        let resData;
+        let xhr = new XMLHttpRequest();
         xhr.open('POST', 'https://netology-slow-rest.herokuapp.com/auth.php');
         xhr.addEventListener('load', () => {
             if (xhr.readyState === xhr.DONE && xhr.status === 200) {
                 resData = JSON.parse(xhr.responseText);
-                saveUser();
+                saveUser(resData);
                 getWelcome(resData);
             };
         });
@@ -38,24 +31,18 @@ function verification(e) {
     e.preventDefault();
 };
 
-function saveUser() {
-    if (resData.success === true) {
-        const user = {
-            success: resData.success,
-            user_id: resData.user_id,
-        };
-        localStorage.user = JSON.stringify(user);
+function saveUser(arg) {
+    if (arg.success === true) {
+        localStorage.setItem('user', arg.user_id);
     };
 };
 
 function authorization() {
     if (localStorage.user) {
-        const user = JSON.parse(localStorage.user);
-        console.log(user);
-        getWelcome(user);
+        getWelcome(localStorage.getItem('user'));
     } else {
         signin.classList.add('signin_active');
-    }
+    };
 };
 
 function getWelcome(arg) {
@@ -65,29 +52,16 @@ function getWelcome(arg) {
         welcome.classList.add('welcome_active');
     } else {
         alert('Неверный логин/пароль');
-        login.value = '';
-        password.value = '';
-    }
+        signinForm.reset();
+    };
 };
 
 function signOut() {
-    login.value = '';
-    password.value = '';
+    signinForm.reset();
     welcome.classList.remove('welcome_active');
     signin.classList.add('signin_active');
     localStorage.removeItem('user');
 };
-
-login.addEventListener('input', () => {
-    if (login.value !== '') {
-        loginText = login.value;
-    };
-});
-password.addEventListener('input', () => {
-    if (password.value !== '') {
-        passText = password.value;
-    };
-});
 
 signinForm.addEventListener('submit', verification);
 
